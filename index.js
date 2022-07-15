@@ -37,20 +37,25 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-app.post("/link", validateURL, (req, res) => {
+app.post("/link", validateURL, async (req, res) => {
   const { url } = req.body;
-
-  // Generate a unique id to identify the url in the database
-  let id = nanoid(7);
-
-  let newURL = new URL({ url, id });
-  try {
-    newURL.save();
-  } catch (err) {
-    res.send("An error was encountered! Please try again.");
+  const result = await URL.findOne({url : url});
+  if(result){
+    // console.log(" result is:  "+result.id);
+    res.json({ message: `URL already exist\nhttp://localhost:8000/${result.id}`, type: "success" });
   }
-  // Send the server address with the unique id
-  res.json({ message: `http://localhost:8000/${newURL.id}`, type: "success" });
+  else{
+    let id = nanoid(7);
+    let newURL = new URL({ url, id });
+    try {
+      newURL.save();
+    } catch (err) {
+      res.send("An error was encountered! Please try again.");
+    }
+    // Send the server address with the unique id
+    res.json({ message: `http://localhost:8000/${newURL.id}`, type: "success" });
+  }
+  // Generate a unique id to identify the url in the database
 });
 
 app.get("/:id", async (req, res) => {
