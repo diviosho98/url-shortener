@@ -69,6 +69,6 @@ app.get("/:id", async (req, res) => {
   res.redirect(originalLink.url);
 });
 
-app.listen(8000, () => {
+app.listen(process.env.PORT || 8000, () => {
   console.log("App listening on port 8000");
 });
