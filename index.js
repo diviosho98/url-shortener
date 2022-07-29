@@ -42,7 +42,7 @@ app.post("/link", validateURL, async (req, res) => {
   const result = await URL.findOne({url : url});
   if(result){
     // console.log(" result is:  "+result.id);
-    res.json({ message: `URL already exist\nhttp://localhost:8000/${result.id}`, type: "success" });
+    res.json({ message: `URL already exist\nhttps://urlshortener98.herokuapp.com/${result.id}`, type: "success" });
   }
   else{
     let id = nanoid(7);
@@ -53,7 +53,7 @@ app.post("/link", validateURL, async (req, res) => {
       res.send("An error was encountered! Please try again.");
     }
     // Send the server address with the unique id
-    res.json({ message: `http://localhost:8000/${newURL.id}`, type: "success" });
+    res.json({ message: `https://urlshortener98.herokuapp.com/${newURL.id}`, type: "success" });
   }
   // Generate a unique id to identify the url in the database
 });
